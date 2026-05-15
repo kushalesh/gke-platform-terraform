@@ -1,0 +1,20 @@
+name: terraform-docs
+on:
+  push:
+    branches: [main]
+    paths: ['modules/**', '.terraform-docs.yml']
+permissions:
+  contents: write
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: terraform-docs/gh-actions@v1
+        with:
+          working-dir: modules/network,modules/gke-cluster,modules/node-pool
+          output-file: README.md
+          output-method: inject
+          git-push: true
